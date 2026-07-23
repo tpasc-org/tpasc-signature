@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+
+PROJECT_CONTEXT.md
+FULL_PROJECT_HISTORY.md
+HOW_TO_DEPLOY.md
+.claudeignore
