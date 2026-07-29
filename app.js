@@ -38,6 +38,19 @@ function isValidPhone(value) {
     return digitCount === 10;
 }
 
+function formatPhoneDigits(digits) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
+function escapeHtml(value) {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
 function capitalizeWords(value) {
     return value.replace(/\S+/g, word => word.charAt(0).toUpperCase() + word.slice(1));
 }
@@ -145,11 +158,21 @@ function editInfo() {
 function updatePreview(user) {
     document.getElementById('staffName').textContent = document.getElementById('copyName').textContent = user.name;
     document.getElementById('staffTitle').textContent = document.getElementById('copyTitle').textContent = user.title;
-    document.getElementById('staffEmail').textContent = document.getElementById('copyEmail').textContent = user.email;
+    const emailSafe = escapeHtml(user.email);
+    const emailHtml = user.email
+        ? `<a href="mailto:${emailSafe}" style="color:#000000; text-decoration:underline;">${emailSafe}</a>`
+        : '';
+    document.getElementById('staffEmail').innerHTML = emailHtml;
+    document.getElementById('copyEmail').innerHTML = emailHtml;
 
-    document.getElementById('staffPhone').textContent = document.getElementById('copyPhone').textContent = user.phone;
+    const phoneDigits = user.phone.replace(/\D/g, '');
+    const hasPhone = phoneDigits.length === 10;
+    const phoneHtml = hasPhone
+        ? `<a href="tel:+1${phoneDigits}" style="color:#000000; text-decoration:underline;">${formatPhoneDigits(phoneDigits)}</a>`
+        : '';
 
-    const hasPhone = Boolean(user.phone);
+    document.getElementById('staffPhone').innerHTML = phoneHtml;
+    document.getElementById('copyPhone').innerHTML = phoneHtml;
     document.getElementById('staffPhoneRow').style.display = hasPhone ? '' : 'none';
     document.getElementById('copyPhoneRow').style.display = hasPhone ? '' : 'none';
 }
