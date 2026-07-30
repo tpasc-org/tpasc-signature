@@ -39,7 +39,7 @@ function isValidPhone(value) {
 }
 
 function formatPhoneDigits(digits) {
-    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
 function escapeHtml(value) {
